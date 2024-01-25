@@ -1,4 +1,4 @@
-package Code;
+package EncapsulationCode;
 public class BankAccount{
 //    States
     private int accountNumber;
