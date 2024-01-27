@@ -3,16 +3,15 @@ package Homework1;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mentor {
-    Long id;
-    String name;
-    String email;
+public class Mentor extends User {
+
     List<Student> students=new ArrayList<>();
 
     public Mentor(Long id, String name, String email, List<Student> students) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+        super(id, name, email);
         this.students = students;
+    }
+    public Mentor(String name, String email){
+        super(name,email);
     }
 }
