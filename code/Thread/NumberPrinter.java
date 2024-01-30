@@ -1,4 +1,4 @@
-package code.thread;
+package code.Thread;
 
 
 public class NumberPrinter implements Runnable{ //extends Thread {

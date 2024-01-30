@@ -1,4 +1,4 @@
-package Thread;
+package code.Thread;
 
 public class Printer extends Thread {
     @Override
