@@ -1,4 +1,4 @@
-package code.Wrapper;
+package code.Generics.Wrapper;
 
 public class Boxing {
     public static void main(String[] args) {
