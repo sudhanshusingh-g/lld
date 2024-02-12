@@ -11,3 +11,4 @@
 | [Threads and Executors](./notes/8_Threads_Executors)                       |
 | [Callable and Future](./notes/9_Callable_Future)                           |
 | [Synchronisation](./notes/10_Synchronisation)                              |
+| [SOLID](./notes/SOLID)                                                     |
