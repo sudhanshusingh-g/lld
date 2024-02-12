@@ -19,7 +19,7 @@ public class Runner {
         executor.execute(adder);
         executor.execute(subtractor);
 
-
+        ((ExecutorService) executor).shutdown();
         System.out.println("Result : "+count.getCount());
     }
 }

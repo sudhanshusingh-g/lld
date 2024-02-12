@@ -8,9 +8,7 @@ public class NumberPrinter implements Runnable{ //extends Thread {
         return number;
     }
 
-    public NumberPrinter(Integer number) {
-        this.number = number;
-    }
+
 
     @Override
     public void run() {
