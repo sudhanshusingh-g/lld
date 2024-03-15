@@ -44,4 +44,11 @@ release the lock and allow another thread to access the critical section.
 
 [Mutex Solution](/code/MultithreadingandConcurrency/AdderSubtractorProblem/Mutex/Main.java)
 
-**Synchronised Keyword**
+**Synchronized Keyword**
+A `synchronized` method or block can only be accessed by one thread at a time. If a thread is accessing a `synchronized`
+method or block, other threads cannot access the `synchronized` method or block. If a thread is accessing a `synchronized`
+method or block, other threads have to wait until the thread exits the `synchronized` method or block.
+
+[Synchronized Solution - Method level](/code/MultithreadingandConcurrency/AdderSubtractorProblem/Synchronisation/method)
+
+[Synchronized Solution - Block level](/code/MultithreadingandConcurrency/AdderSubtractorProblem/Synchronisation/block)
