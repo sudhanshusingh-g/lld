@@ -21,9 +21,9 @@ double,string,long etc.
 You need to create a class for each of these types. Also this will lead to **Class Explosion** if there are large
 members.
 To solve this :
-1. we will create an [Object Class](/code/Advance/Generics/ObjectClass/Main.java), since it is the wrapper class of all the types.
+1. we will create an [Object Class](/code/AdvanceJava/Generics/ObjectClass/Main.java), since it is the wrapper class of all the types.
 But the issue is that:
    1. Every new type to use we have to typecast it.
    2. Typecasting is error-prone,but the error is not provided at compile-time,it is provided at run-time and will get
    error like `ClassCastException`
-2. Hence, we use [Generics Class](/code/Advance/Generics/GenericClass/Main.java)
+2. Hence, we use [Generics Class](/code/AdvanceJava/Generics/GenericClass/Main.java)
