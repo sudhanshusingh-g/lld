@@ -11,7 +11,7 @@ So to achieve this, we have some standard software designs principles to follow.
 >We will understand SOLID design principle by designing a `Bird`.
 
 Without knowing design principles how we will create a `Bird`
-[Version 0](/code/DesignPrinciples/v_0/Main.java)
+[Version 0](/code/DesignPrinciples/DesigningBird/v_0/Main.java)
 The issues in above code:
 - There is excessive use of if-else/ Switch case.
 - No Readability
@@ -34,7 +34,7 @@ So above violation can be resolved by using **SRP**.
 SRP and OCP are complementary to each other. OCP says that class/modules/functions is open for extension and closed for
 modification. SRP suggest that there will be a only a single reason to change it.
 So we can implement these two principles in designing our `Bird`. So after updating **Version 0**, our
-[**Version 1**](/code/DesignPrinciples/SRPandOCP)
+[**Version 1**](/code/DesignPrinciples/DesigningBird/v_1)
 case study of `Bird` achieve these two principles and make our code more robust and maintainable.
 
 >Point to remember:
@@ -56,7 +56,7 @@ Why we should not give surprises to client?
 
 [Uber Eats Payment Issue](https://www.linkedin.com/feed/update/urn:li:activity:6909229360352825344/)
 
-To over the above issue we will refactor our  [**Version 2**](/code/DesignPrinciples/v_2)
+To over the above issue we will refactor our  [**Version 2**](/code/DesignPrinciples/DesigningBird/v_2)
 
 Now from above code we can say the problem is addressed and used efficiently.
 But a new problem arises that - what if there are more features of differentiation like `Dancable` and many more it will
@@ -196,7 +196,7 @@ public class Main {
 You can substitute objects of `Rectangle` and `Square` classes in places where a `Shape` is expected, and the behavior
 remains consistent and as expected.
 
-For `Bird` design [**Version 3**](/code/DesignPrinciples/v_3)
+For `Bird` design [**Version 3**](/code/DesignPrinciples/DesigningBird/v_3)
 ### **I**: Interface Segregation Principle
 - It states that clients should not be forced to depend on interfaces they do not use. In other words, it advocates for
 the creation of specific, narrowly-focused interfaces rather than large, monolithic ones. This helps prevent unnecessary
@@ -326,8 +326,7 @@ Flexibility and Extensibility: DIP promotes a design that is more flexible and e
 
 Here's a simple example in Java to illustrate the Dependency Inversion Principle:
 
-java
-Copy code
+```java
 // Dependency Inversion Principle Violation
 class LightSwitch {
 private LightBulb lightBulb;
@@ -366,6 +365,7 @@ private boolean isOn;
         return isOn;
     }
 }
+```
 In this example, the LightSwitch class directly depends on the LightBulb class, violating the Dependency Inversion
 Principle. Instead, LightSwitch should depend on an abstraction (interface or abstract class) that represents the
 functionality of a light bulb, allowing for different implementations of light bulbs to be used.
@@ -423,4 +423,4 @@ Inversion Principle. This allows for greater flexibility, as different implement
 without modifying the LightSwitch class.
 
 The updated  and last version of `Bird` design.
-[Version 4](/code/DesignPrinciples/v_4/Main.java)
+[Version 4](/code/DesignPrinciples/DesigningBird/v_4)
