@@ -7,5 +7,9 @@ authored by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides, collec
 This book catalog 23 design patterns divided in 3 broad categories.
 
 1. [Creational](/notes/DesignPatterns/Creational)
+
+   Creational design patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 2. [Structural](/notes/DesignPatterns/Structural)
+   
+    Structural design patterns explain how to assemble objects and classes into larger structures, while keeping these structures flexible and efficient.
 3. [Behavioral](/notes/DesignPatterns/Behavioral)
