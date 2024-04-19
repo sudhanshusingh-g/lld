@@ -70,9 +70,9 @@ class Board{
 Cell[][] cell
 }
 class Cell{
--int row
--int col
--CellStatus cellStatus
+int row
+int col
+CellStatus cellStatus
 }
 class CellStatus{
     <<enumeration>>
@@ -81,7 +81,7 @@ UNOCCUPIED
 }
 
 class Symbol{
-    -char s
+    char s
 }
 class Player{
     String name
