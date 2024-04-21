@@ -51,6 +51,3 @@ public class Main {
 
 To run the thread we use `start()` method on thread object.
 
-### Practice
-- [Assignment 1](/code/MultithreadingandConcurrency/Runnable/Assignment1)
-- [Assignment 2](/code/MultithreadingandConcurrency/Runnable/Assignment2)
