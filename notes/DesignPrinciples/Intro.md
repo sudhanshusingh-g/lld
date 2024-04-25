@@ -1,426 +1,281 @@
-What is a good software? A good software must be :
-- Maintainable
-- Extensible
-
-So to achieve this, we have some standard software designs principles to follow. Some of them are:
-- SOLID
-- CUPID
-- GRASP
-
-> Will cover the SOLID design principle only because it is the most implemented and popular among software domain .
->We will understand SOLID design principle by designing a `Bird`.
-
-Without knowing design principles how we will create a `Bird`
-[Version 0](/code/DesignPrinciples/DesigningBird/v_0/Main.java)
-The issues in above code:
-- There is excessive use of if-else/ Switch case.
-- No Readability
-- No Testability
-- No Re-usability
-- Multiple reasons to change the methods.
-- Monster methods or God Classes
-
-So above violation can be resolved by using **SRP**.
-
-### **S**: Single Responsibility Principle
-- A class should have only one reason to change, meaning it should have only one responsibility.
-- Each class should encapsulate a single responsibility or part of the functionality.
-- Very subjective in nature.
-
-### **O**: Open/Closed Principle
-- Software entities (classes, modules, functions, etc.) should be open for extension but closed for modification.
-- The behavior of a module can be extended without modifying its source code.
-
-SRP and OCP are complementary to each other. OCP says that class/modules/functions is open for extension and closed for
-modification. SRP suggest that there will be a only a single reason to change it.
-So we can implement these two principles in designing our `Bird`. So after updating **Version 0**, our
-[**Version 1**](/code/DesignPrinciples/DesigningBird/v_1)
-case study of `Bird` achieve these two principles and make our code more robust and maintainable.
-
->Point to remember:
-> 
->How to decide which class to create if we are having two concrete classes and want to create parent class?
-> 1. Do they have common state?
->   1. Yes: `Interface`
->   2. No
->      1. Do we need an object of Parent class?
->         - No: `Abstract`
->         - Yes: `Concrete Class`
-
-So now we have completed version 1 of `Bird`. What if new requirement come that we want to add `Penguin` bird.
-To make sure that penguin cannot fly?
-- Make the fly method empty.
-- Throw an exception
-
-Why we should not give surprises to client?
-
-[Uber Eats Payment Issue](https://www.linkedin.com/feed/update/urn:li:activity:6909229360352825344/)
-
-To over the above issue we will refactor our  [**Version 2**](/code/DesignPrinciples/DesigningBird/v_2)
-
-Now from above code we can say the problem is addressed and used efficiently.
-But a new problem arises that - what if there are more features of differentiation like `Dancable` and many more it will
-lead to `Class Explosion`.
-
-This will bring to our next design principle
+### Single Responsibility Principle (SRP):
+>A class should have only one reason to change.
+Each class should have a single responsibility, encapsulating one aspect of the functionality.
 
 
-### **L**: Liskov's Substitution Principle
-- states that objects of a superclass should be replaceable with objects of a subclass without affecting the correctness
-of the program.
-- Child class should behave as parent wants them to behave.
-- No child class should give a special meaning to the parent class's behaviour.
-
-For example:
+Suppose we have a class called Employee that handles both employee data management and sending emails. This violates SRP because it has two reasons to change: if the employee data management logic changes or if the email sending logic changes.
 ```java
-// Rectangle.java
-public class Rectangle {
-    protected double width;
-    protected double height;
-
-    public Rectangle(double width, double height) {
-        this.width = width;
-        this.height = height;
+// Employee.java
+public class Employee {
+    public void manageData() {
+        // Code for managing employee data
     }
 
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public double area() {
-        return width * height;
-    }
-}
-
-// Square.java
-public class Square extends Rectangle {
-    public Square(double side) {
-        super(side, side);
-    }
-
-    // Violates LSP
-    @Override
-    public void setWidth(double width) {
-        super.setWidth(width);
-        super.setHeight(width);
-    }
-
-    // Violates LSP
-    @Override
-    public void setHeight(double height) {
-        super.setWidth(height);
-        super.setHeight(height);
-    }
-}
-
-public class Main {
-    public static void main(String[] args) {
-        Rectangle rectangle = new Rectangle(4, 5);
-        System.out.println(rectangle.area()); // Output: 20.0
-
-        Square square = new Square(4);
-        System.out.println(square.area());    // Output: 16.0
-
-        square.setWidth(5);
-        System.out.println(square.area());    // Output: 25.0 (Expected: 20.0)
+    public void sendEmail() {
+        // Code for sending email to employee
     }
 }
 
 ```
-As you can see, changing the width of the Square using the inherited setWidth() method doesn't behave as expected. This
-violates the Liskov Substitution Principle, as substituting a Square for a Rectangle leads to unexpected behavior.
 
-Implementation of LSP:
+We can split the Employee class into two separate classes: EmployeeData for managing employee data and EmailSender for sending emails. Each class now has a single responsibility, adhering to SRP.
+```java
+// EmployeeData.java
+public class EmployeeData {
+    public void manageData() {
+        // Code for managing employee data
+    }
+}
+
+// EmailSender.java
+public class EmailSender {
+    public void sendEmail() {
+        // Code for sending email to employee
+    }
+}
+
+```
+
+
+### Open-Closed Principle
+>Classes should be open for extension but closed for modification.
+Software entities should be designed in a way that allows new functionality to be added without changing existing code.
+
+Suppose we have a class Shape with a method calculateArea(). If we want to add a new shape, such as a Triangle, we might need to modify the calculateArea() method, violating OCP.
 ```java
 // Shape.java
-public interface Shape {
-    double area();
+public class Shape {
+    public double calculateArea() {
+        // Common logic for calculating area of shapes
+    }
 }
 
-// Rectangle.java
-public class Rectangle implements Shape {
-    private double width;
-    private double height;
+// Triangle.java
+public class Triangle extends Shape {
+    public double calculateArea() {
+        // Calculation logic for area of triangle
+    }
+}
 
-    public Rectangle(double width, double height) {
+```
+
+We can create an abstract Shape class with a method calculateArea() and concrete subclasses like Circle, Rectangle, and Triangle. When we need to add a new shape, we simply create a new subclass without modifying existing code, adhering to OCP.
+```java
+public abstract class Shape {
+    public abstract double calculateArea();
+}
+
+public class Circle extends Shape {
+    @Override
+    public double calculateArea() {
+        // calculate area for circle
+    }
+}
+
+public class Rectangle extends Shape {
+    @Override
+    public double calculateArea() {
+        // calculate area for rectangle
+    }
+}
+
+public class Triangle extends Shape {
+    @Override
+    public double calculateArea() {
+        // calculate area for triangle
+    }
+}
+
+```
+
+
+### Liskov Substitution Principle (LSP)
+
+>Objects of a superclass should be replaceable with objects of its subclasses without affecting the correctness of the program.
+Subtypes must be substitutable for their base types without altering the behavior of the program.
+
+
+If we have a class Square that inherits from Rectangle, where Square restricts width and height to be equal, this violates LSP because substituting a Square for a Rectangle could lead to unexpected behavior.
+```java
+public class Rectangle {
+    protected int width;
+    protected int height;
+
+    public void setWidth(int width) {
         this.width = width;
+    }
+
+    public void setHeight(int height) {
         this.height = height;
     }
-
-    @Override
-    public double area() {
-        return width * height;
-    }
 }
 
-// Square.java
-public class Square implements Shape {
-    private double side;
-
-    public Square(double side) {
-        this.side = side;
+public class Square extends Rectangle {
+    @Override
+    public void setWidth(int width) {
+        this.width = width;
+        this.height = width; // Violates LSP
     }
 
     @Override
-    public double area() {
-        return side * side;
-    }
-}
-public class Main {
-    public static void printArea(Shape shape) {
-        System.out.println(shape.area());
-    }
-
-    public static void main(String[] args) {
-        Rectangle rectangle = new Rectangle(4, 5);
-        printArea(rectangle); // Output: 20.0
-
-        Square square = new Square(4);
-        printArea(square);    // Output: 16.0
+    public void setHeight(int height) {
+        this.width = height; // Violates LSP
+        this.height = height;
     }
 }
 
 ```
-You can substitute objects of `Rectangle` and `Square` classes in places where a `Shape` is expected, and the behavior
-remains consistent and as expected.
 
-For `Bird` design [**Version 3**](/code/DesignPrinciples/DesigningBird/v_3)
-### **I**: Interface Segregation Principle
-- It states that clients should not be forced to depend on interfaces they do not use. In other words, it advocates for
-the creation of specific, narrowly-focused interfaces rather than large, monolithic ones. This helps prevent unnecessary
-coupling between classes and promotes a more modular and maintainable codebase.
+We can design the classes Rectangle and Square in a way that honors LSP, such as by having separate behavior for setting width and height in each class. This ensures that substituting a Square for a Rectangle does not alter the behavior of the program.
 ```java
-// Interface Segregation Principle Violation
-interface Worker {
+public class Shape {
+    protected int width;
+    protected int height;
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+}
+
+public class Rectangle extends Shape {
+    // No need to override setWidth and setHeight
+}
+
+public class Square extends Shape {
+    @Override
+    public void setWidth(int width) {
+        this.width = width;
+        this.height = width;
+    }
+
+    @Override
+    public void setHeight(int height) {
+        this.width = height;
+        this.height = height;
+    }
+}
+
+```
+
+### Interface Segregation Principle (ISP)
+
+>Clients should not be forced to depend on methods they do not use.
+Keep interfaces focused and granular, tailored to the needs of individual clients.
+
+
+If we have a large interface Worker with methods for both work() and eat(), but some classes only need work(), this violates ISP because clients are forced to depend on methods they don't use.
+```java
+public interface Worker {
     void work();
     void eat();
 }
 
-class Human implements Worker {
+public class Programmer implements Worker {
+    @Override
     public void work() {
-        System.out.println("Working...");
+        // programmer-specific work
     }
 
+    @Override
     public void eat() {
-        System.out.println("Eating...");
+        // programmer-specific eating
     }
 }
 
-class Robot implements Worker {
+public class Manager implements Worker {
+    @Override
     public void work() {
-        System.out.println("Working...");
+        // manager-specific work
     }
 
+    @Override
     public void eat() {
-        // Robots don't eat, so this method is meaningless for them
-        // But they are forced to implement it due to the Worker interface
-        System.out.println("Robot cannot eat!");
+        // manager-specific eating
     }
 }
 
 ```
-In this example, both `Human` and `Robot` classes implement the `Worker` interface, which includes both `work()` and
-`eat()`methods. However, the `eat()` method is meaningless for the `Robot` class, violating the Interface Segregation
-Principle.
-To adhere to the Interface Segregation Principle, we can split the Worker interface into smaller, more cohesive
-interfaces:
+
+We can split the Worker interface into smaller, more focused interfaces like Workable and Eatable.
+Classes that need both behaviors can implement both interfaces, while classes that only need one behavior can implement the relevant interface, adhering to ISP.
 ```java
-// Interface Segregation Principle Adherence
-interface Workable {
+public interface Workable {
     void work();
 }
 
-interface Feedable {
+public interface Eatable {
     void eat();
 }
 
-class Human implements Workable, Feedable {
+public class Programmer implements Workable, Eatable {
+    @Override
     public void work() {
-        System.out.println("Working...");
+        // programmer-specific work
     }
 
+    @Override
     public void eat() {
-        System.out.println("Eating...");
+        // programmer-specific eating
     }
 }
 
-class Robot implements Workable {
+public class Manager implements Workable {
+    @Override
     public void work() {
-        System.out.println("Working...");
+        // manager-specific work
     }
 }
 
 ```
-### **D**: Dependency Inversion Principle
-states that high-level modules should not depend on low-level modules, but both should depend on abstractions.
-Additionally, it emphasizes that abstractions should not depend on details; rather, details should depend on
-abstractions. This principle helps in writing more flexible, maintainable, and testable code by reducing coupling
-between modules and promoting the use of interfaces or abstract classes to decouple components.
+### Dependency Inversion Principle (DIP)
+>High-level modules should not depend on low-level modules. Both should depend on abstractions.
+Abstractions should not depend on details. Details should depend on abstractions.
+
+
+If a high-level module ReportGenerator directly depends on a low-level module Database, changes in the Database implementation could require modifications in ReportGenerator, violating DIP.
 ```java
-// Dependency Inversion Principle Violation
-class LightSwitch {
-    private LightBulb lightBulb;
+public class ReportGenerator {
+    private Database database;
 
-    public LightSwitch() {
-        this.lightBulb = new LightBulb();
+    public ReportGenerator() {
+        this.database = new Database(); // Direct dependency on Database
     }
 
-    public void toggle() {
-        if (lightBulb.isOn()) {
-            lightBulb.turnOff();
-        } else {
-            lightBulb.turnOn();
-        }
+    public void generateReport() {
+        // logic using Database
     }
 }
 
-class LightBulb {
-    private boolean isOn;
-
-    public LightBulb() {
-        this.isOn = false;
-    }
-
-    public void turnOn() {
-        isOn = true;
-        System.out.println("Light is on");
-    }
-
-    public void turnOff() {
-        isOn = false;
-        System.out.println("Light is off");
-    }
-
-    public boolean isOn() {
-        return isOn;
-    }
+public class Database {
+    // Database implementation details
 }
 
 ```
 
-The Dependency Inversion Principle (DIP) is one of the SOLID principles of object-oriented design. It states that high-level modules should not depend on low-level modules, but both should depend on abstractions. Additionally, it emphasizes that abstractions should not depend on details; rather, details should depend on abstractions. This principle helps in writing more flexible, maintainable, and testable code by reducing coupling between modules and promoting the use of interfaces or abstract classes to decouple components.
-
-Here are some key points to consider when applying the Dependency Inversion Principle:
-
-Abstraction: Define interfaces or abstract classes to represent higher-level abstractions and dependencies. These abstractions should capture the essential behavior or functionality required by the components.
-
-Decoupling: Components should depend on abstractions rather than concrete implementations. This reduces the direct dependency between classes and allows for easier substitution of components without modifying the high-level modules.
-
-Inversion of Control (IoC): DIP often goes hand in hand with Inversion of Control (IoC) containers or frameworks. IoC containers manage the creation and lifecycle of objects, injecting dependencies into the dependent components, and thus facilitating adherence to the Dependency Inversion Principle.
-
-Testability: By relying on abstractions and interfaces, code becomes more testable. Dependencies can be easily mocked or stubbed during unit testing, allowing for isolated testing of components.
-
-Flexibility and Extensibility: DIP promotes a design that is more flexible and extensible. Components can be easily replaced or extended by providing alternative implementations that adhere to the same abstractions.
-
-Here's a simple example in Java to illustrate the Dependency Inversion Principle:
-
+We can introduce an abstraction, such as an interface DataRepository, which both ReportGenerator and Database depend on. ReportGenerator interacts with DataRepository through this abstraction, allowing different implementations of DataRepository without modifying ReportGenerator, adhering to DIP.
 ```java
-// Dependency Inversion Principle Violation
-class LightSwitch {
-private LightBulb lightBulb;
+public interface DataRepository {
+    // Methods for interacting with data
+}
 
-    public LightSwitch() {
-        this.lightBulb = new LightBulb();
+public class ReportGenerator {
+    private DataRepository dataRepository;
+
+    public ReportGenerator(DataRepository dataRepository) {
+        this.dataRepository = dataRepository; // Dependency injection
     }
 
-    public void toggle() {
-        if (lightBulb.isOn()) {
-            lightBulb.turnOff();
-        } else {
-            lightBulb.turnOn();
-        }
+    public void generateReport() {
+        // logic using DataRepository
     }
 }
 
-class LightBulb {
-private boolean isOn;
-
-    public LightBulb() {
-        this.isOn = false;
-    }
-
-    public void turnOn() {
-        isOn = true;
-        System.out.println("Light is on");
-    }
-
-    public void turnOff() {
-        isOn = false;
-        System.out.println("Light is off");
-    }
-
-    public boolean isOn() {
-        return isOn;
-    }
-}
-```
-In this example, the LightSwitch class directly depends on the LightBulb class, violating the Dependency Inversion
-Principle. Instead, LightSwitch should depend on an abstraction (interface or abstract class) that represents the
-functionality of a light bulb, allowing for different implementations of light bulbs to be used.
-
-```java
-// Dependency Inversion Principle Adherence
-interface Switchable {
-    void turnOn();
-    void turnOff();
-}
-
-class LightSwitch {
-    private Switchable switchable;
-
-    public LightSwitch(Switchable switchable) {
-        this.switchable = switchable;
-    }
-
-    public void toggle() {
-        if (switchable.isOn()) {
-            switchable.turnOff();
-        } else {
-            switchable.turnOn();
-        }
-    }
-}
-
-class LightBulb implements Switchable {
-    private boolean isOn;
-
-    public LightBulb() {
-        this.isOn = false;
-    }
-
-    @Override
-    public void turnOn() {
-        isOn = true;
-        System.out.println("Light is on");
-    }
-
-    @Override
-    public void turnOff() {
-        isOn = false;
-        System.out.println("Light is off");
-    }
-
-    public boolean isOn() {
-        return isOn;
-    }
+public class Database implements DataRepository {
+    // Database implementation details
 }
 
 ```
-Now, LightSwitch depends on the Switchable interface instead of the LightBulb class directly, adhering to the Dependency
-Inversion Principle. This allows for greater flexibility, as different implementations of Switchable can be provided
-without modifying the LightSwitch class.
-
-The updated  and last version of `Bird` design.
-[Version 4](/code/DesignPrinciples/DesigningBird/v_4)
